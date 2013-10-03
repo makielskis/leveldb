@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
+#include <memory>
 #include <algorithm>
 #include <stdint.h>
 #include "leveldb/comparator.h"
@@ -68,9 +69,11 @@ class BytewiseComparatorImpl : public Comparator {
 
 static port::OnceType once = LEVELDB_ONCE_INIT;
 static const Comparator* bytewise;
+static std::unique_ptr<const Comparator> managed_bytewise;
 
 static void InitModule() {
-  bytewise = new BytewiseComparatorImpl;
+  managed_bytewise = std::unique_ptr<const Comparator>(new BytewiseComparatorImpl);
+  bytewise = managed_bytewise.get();
 }
 
 const Comparator* BytewiseComparator() {

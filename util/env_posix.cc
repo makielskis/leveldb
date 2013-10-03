@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
+#include <memory>
 #include <deque>
 #include <set>
 #include <dirent.h>
@@ -415,8 +416,6 @@ class PosixEnv : public Env {
  public:
   PosixEnv();
   virtual ~PosixEnv() {
-    fprintf(stderr, "Destroying Env::Default()\n");
-    abort();
   }
 
   virtual Status NewSequentialFile(const std::string& fname,
@@ -718,8 +717,12 @@ void PosixEnv::StartThread(void (*function)(void* arg), void* arg) {
 }  // namespace
 
 static pthread_once_t once = PTHREAD_ONCE_INIT;
+static std::unique_ptr<Env> managed_env;
 static Env* default_env;
-static void InitDefaultEnv() { default_env = new PosixEnv; }
+static void InitDefaultEnv() {
+  managed_env = std::unique_ptr<Env>(new PosixEnv);
+  default_env = managed_env.get();
+}
 
 Env* Env::Default() {
   pthread_once(&once, InitDefaultEnv);
