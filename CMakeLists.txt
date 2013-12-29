@@ -72,6 +72,14 @@ add_library(leveldb STATIC ${PORT} ${SRC})
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
+elseif(MSVC)
+  target_link_libraries(leveldb shlwapi)
+  set(_def
+    LEVELDB_PLATFORM_WINDOWS
+    OS_WINDOWS
+    ssize_t=long
+  )
+  set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
 elseif(MINGW)
   set(_def
     _WIN32_WINNT=0x0501
