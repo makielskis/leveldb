@@ -93,4 +93,112 @@ elseif(MINGW)
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
   set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
   target_link_libraries(leveldb shlwapi)
+else()
+  set(_def LEVELDB_PLATFORM_POSIX)
+  set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=c++11")
+endif()
+
+################################
+# Tests
+################################
+set(TEST_SRC
+  util/testutil.cc
+  util/testharness.cc
+)
+
+add_executable(arena_test ${TEST_SRC} util/arena_test.cc)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
+  set_target_properties(arena_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+elseif(MINGW)
+  set(_def
+    _WIN32_WINNT=0x0501
+    _WIN32_IE=0x0501
+    WINVER=0x0501
+    LEVELDB_PLATFORM_WINDOWS
+    _REENTRANT
+    OS_WINDOWS
+    __USE_MINGW_ANSI_STDIO=1
+  )
+  set_target_properties(arena_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(arena_test PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
+else()
+  set(_def LEVELDB_PLATFORM_POSIX)
+  set_target_properties(arena_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(arena_test PROPERTIES COMPILE_FLAGS "-std=c++11")
+  target_link_libraries(arena_test leveldb pthread)
+endif()
+
+add_executable(bloom_test ${TEST_SRC} util/bloom_test.cc)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
+  set_target_properties(bloom_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+elseif(MINGW)
+  set(_def
+    _WIN32_WINNT=0x0501
+    _WIN32_IE=0x0501
+    WINVER=0x0501
+    LEVELDB_PLATFORM_WINDOWS
+    _REENTRANT
+    OS_WINDOWS
+    __USE_MINGW_ANSI_STDIO=1
+  )
+  set_target_properties(bloom_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(bloom_test PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
+else()
+  set(_def LEVELDB_PLATFORM_POSIX)
+  set_target_properties(bloom_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(bloom_test PROPERTIES COMPILE_FLAGS "-std=c++11")
+  target_link_libraries(bloom_test leveldb pthread)
+endif()
+
+add_executable(cache_test ${TEST_SRC} util/cache_test.cc)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
+  set_target_properties(cache_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+elseif(MINGW)
+  set(_def
+    _WIN32_WINNT=0x0501
+    _WIN32_IE=0x0501
+    WINVER=0x0501
+    LEVELDB_PLATFORM_WINDOWS
+    _REENTRANT
+    OS_WINDOWS
+    __USE_MINGW_ANSI_STDIO=1
+  )
+  set_target_properties(cache_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(cache_test PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
+else()
+  set(_def LEVELDB_PLATFORM_POSIX)
+  set_target_properties(cache_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(cache_test PROPERTIES COMPILE_FLAGS "-std=c++11")
+  target_link_libraries(cache_test leveldb pthread)
+endif()
+
+add_executable(env_test ${TEST_SRC} util/env_test.cc)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
+  set_target_properties(env_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+elseif(MINGW)
+  set(_def
+    _WIN32_WINNT=0x0501
+    _WIN32_IE=0x0501
+    WINVER=0x0501
+    LEVELDB_PLATFORM_WINDOWS
+    _REENTRANT
+    OS_WINDOWS
+    __USE_MINGW_ANSI_STDIO=1
+  )
+  set_target_properties(env_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(env_test PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
+else()
+  set(_def LEVELDB_PLATFORM_POSIX)
+  set_target_properties(env_test PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(env_test PROPERTIES COMPILE_FLAGS "-std=c++11")
+  target_link_libraries(env_test leveldb pthread)
 endif()
