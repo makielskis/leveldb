@@ -94,6 +94,14 @@ elseif(MINGW)
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
   set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
   target_link_libraries(leveldb shlwapi)
+elseif(ANDROID)
+  set(_def
+    LEVELDB_PLATFORM_POSIX
+    _REENTRANT
+    OS_ANDROID
+  )
+  set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=c++11")
 else()
   set(_def LEVELDB_PLATFORM_POSIX)
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
