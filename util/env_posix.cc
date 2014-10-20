@@ -4,7 +4,7 @@
 
 #include <memory>
 #include <deque>
-#include <set>
+#include <map>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -280,11 +280,11 @@ class PosixFileLock : public FileLock {
 class PosixLockTable {
  private:
   port::Mutex mu_;
-  std::set<std::string> locked_files_;
+  std::map<std::string, bool> locked_files_;
  public:
   bool Insert(const std::string& fname) {
     MutexLock l(&mu_);
-    return locked_files_.insert(fname).second;
+    return locked_files_.insert(std::make_pair(fname, true)).second;
   }
   void Remove(const std::string& fname) {
     MutexLock l(&mu_);
