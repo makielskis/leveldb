@@ -72,6 +72,7 @@ add_library(leveldb STATIC ${PORT} ${SRC})
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(_def OS_MACOSX LEVELDB_PLATFORM_POSIX)
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
+  set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=c++11")
 elseif(MSVC)
   target_link_libraries(leveldb shlwapi)
   set(_def
