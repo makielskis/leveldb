@@ -79,7 +79,6 @@ elseif(MSVC)
     LEVELDB_PLATFORM_WINDOWS
     OS_WINDOWS
     ssize_t=long
-    snprintf=_snprintf
   )
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
 elseif(MINGW)
