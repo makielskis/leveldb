@@ -5,9 +5,6 @@ project(leveldb)
 ################################
 # Include Paths
 ################################
-include_directories("include")
-include_directories("../leveldb")
-
 set(SRC
   db/builder.cc
   db/c.cc
@@ -107,3 +104,6 @@ else()
   set_target_properties(leveldb PROPERTIES COMPILE_DEFINITIONS "${_def}")
   set_target_properties(leveldb PROPERTIES COMPILE_FLAGS "-std=c++11")
 endif()
+
+target_include_directories(leveldb PUBLIC "include")
+target_include_directories(leveldb PUBLIC "../leveldb")
